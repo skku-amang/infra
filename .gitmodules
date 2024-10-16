@@ -1,6 +1,6 @@
-[submodule "Homepage-BackEnd"]
-	path = Homepage-BackEnd
-	url = https://github.com/skku-amang/Homepage-BackEnd.git
-[submodule "Homepage-FrontEnd"]
-	path = Homepage-FrontEnd
-	url = https://github.com/skku-amang/Homepage-FrontEnd.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/skku-amang/backend.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/skku-amang/frontend.git
