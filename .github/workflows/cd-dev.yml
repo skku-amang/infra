@@ -16,8 +16,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        submodules: true
-        token: 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
+        token: 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  # Using the provided token
+
+    - name: Update submodules
+      run: |
+        git submodule sync --recursive
+        git submodule update --init --recursive
+      env:
+        GITHUB_TOKEN: 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  # Explicitly specifying the token
+
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v3
 
