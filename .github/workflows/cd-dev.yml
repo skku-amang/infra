@@ -31,6 +31,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
+          context: ./backend
           file: ./backend/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/amang-backend:latest
@@ -42,9 +43,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: true
+          
       # - name: Load dotenv from secret
       #   run: |
       #     echo "${{ secrets.ENV_DEVELOPMENT }}" > .env
+      
       - name: Check if containers are running
         id: check-container
         run: |
@@ -53,6 +58,7 @@ jobs:
             docker compose --profile deploy ps -q
             echo EOF
           } >> "$GITHUB_OUTPUT"
+          
       - name: Initialize containers
         if: steps.check-container.outputs.stdout == ''
         run: docker compose --profile deploy up -d --no-recreate
