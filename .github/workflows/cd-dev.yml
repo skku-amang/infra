@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Development Server CD
 
 on:
@@ -20,13 +17,14 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.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 }}
 
     - name: Build and push image
       uses: docker/build-push-action@v6
       with:
         file: ./backend/Dockerfile
         push: true
+        tags: ghcr.io/${{ github.repository_owner }}/amang-backend:latest
 
   run-server:
     name: Run stage server
@@ -56,11 +54,6 @@ jobs:
       - name: Run docker compose up
         run: |
           docker compose --profile deploy up -d
-      - name: Copy Caddyfile into Caddy Container
-        run: docker cp ./apps/infra/stage/Caddyfile caddy:/etc/caddy/Caddyfile
-
-      - name: Graceful reload Caddy
-        run: docker exec -w /etc/caddy caddy caddy reload
 
       - name: Remove unused docker storages
         run: docker system prune -a -f --volumes
