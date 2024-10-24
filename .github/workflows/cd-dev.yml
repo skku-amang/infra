@@ -13,8 +13,11 @@ jobs:
     name: Build Backend image
     runs-on: ubuntu-latest
     steps:
-      - name: Log token value
-        run: echo "Token value: ${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+    - name: Debug (by PSModule)
+      # You may pin to the exact commit or the version.
+      # uses: PSModule/Debug@45dbe9f0c3937c5b56d780c3b6631a3f38635f2d
+      uses: PSModule/Debug@v0.0.2
+          
 
     - name: Checkout repository
       uses: actions/checkout@v4
