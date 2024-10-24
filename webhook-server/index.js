@@ -11,7 +11,7 @@ app.post('/webhook', (req, res) => {
   console.log('Push event received. Pulling code and rebuilding images...');
 
   // 비동기적으로 스크립트 실행
-  const deployProcess = spawn('./deploy.sh');
+  const deployProcess = spawn('bash', ['./deploy.sh']);
 
   deployProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
