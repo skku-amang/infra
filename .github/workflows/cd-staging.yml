@@ -39,6 +39,7 @@ jobs:
   deploy:
     name: Deploy and run server
     runs-on: self-hosted
+    environment: staging
     needs: [build-backend]
     steps:
       - name: Checkout repository
