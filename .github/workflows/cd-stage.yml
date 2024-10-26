@@ -1,4 +1,4 @@
-name: Development Server CD
+name: CD - Stage
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
   deploy:
     name: Deploy and run server
     runs-on: self-hosted
-    environment: staging
+    environment: stage
     needs: [build-backend]
     steps:
       - name: Checkout repository
