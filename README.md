@@ -25,12 +25,14 @@ infra
 
 
 ## 사용법1: 수동 배포
-### 1. 이 레포지토리를 클론합니다.
+### 1. 레포지토리 클론
+이 레포지토리를 클론하고 서브모듈을 업데이트합니다.
 ```bash
 git clone https://github.com/skku-amang/infra
+git submodule update --init --recursive
 ```
 
-### 2. docker-compose로 서비스를 실행합니다.
+### 2. 서비스 실행
 ```bash
 cd infra
 docker-compose up -d --build
