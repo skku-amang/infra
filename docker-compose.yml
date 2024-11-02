@@ -11,7 +11,6 @@ services:
     depends_on:
       - frontend
       - backend
-      - certbot
 
   db:
     image: postgres:latest
@@ -23,7 +22,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   frontend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/amang-frontend:latest
+    build: ./frontend
     ports:
       - '3000:3000'
     env_file:
@@ -49,13 +48,6 @@ services:
         python manage.py seed_generations &&
         python manage.py runserver 0.0.0.0:8000
       "
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   db-data:
