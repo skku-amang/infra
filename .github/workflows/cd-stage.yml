@@ -67,7 +67,9 @@ jobs:
   deploy:
     name: Deploy and Run Server
     runs-on: self-hosted
-    environment: stage
+    environment:
+      name: stage
+      url: https://amang.net
     needs: [build-backend, build-frontend]
     steps:
       - name: Checkout repository
