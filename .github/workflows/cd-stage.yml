@@ -1,8 +1,9 @@
-name: CD - Stage
+name: CD Stage
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -10,7 +11,7 @@ permissions:
 
 jobs:
   build-backend:
-    name: Build Backend image
+    name: Build and Push Backend Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,17 +19,17 @@ jobs:
         with:
           submodules: true
 
-      - name: Docker Setup Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push image
+      - name: Build and push backend image
         uses: docker/build-push-action@v6
         with:
           context: ./backend
@@ -36,27 +37,52 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/amang-backend:latest
 
-  deploy:
-    name: Deploy and run server
-    runs-on: self-hosted
-    environment: stage
-    needs: [build-backend]
+  build-frontend:
+    name: Build and Push Frontend Image
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: true
-          
-      - name: Initialize containers
-        if: steps.check-container.outputs.stdout == ''
-        run: docker compose --profile deploy up -d --no-recreate
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/amang-frontend:latest
+
+  deploy:
+    name: Deploy and Run Server
+    runs-on: self-hosted
+    environment:
+      name: stage
+      url: https://amang.net
+    needs: [build-backend, build-frontend]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Pull docker images
-        run: docker compose --profile update-target pull
+        run: docker compose pull
 
       - name: Run docker compose up
         run: |
-          docker compose --profile deploy up -d
+          docker compose up -d
 
       - name: Remove unused docker storages
         run: docker system prune -a -f --volumes
