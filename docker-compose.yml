@@ -11,6 +11,7 @@ services:
     depends_on:
       - frontend
       - backend
+      - certbot
 
   db:
     image: postgres:latest
