@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   nginx:
     image: nginx:latest
@@ -33,7 +31,7 @@ services:
       - db
 
   backend:
-    build: ./backend
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/amang-backend:latest
     ports:
       - '8000:8000'
     env_file:
