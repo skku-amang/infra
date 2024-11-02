@@ -49,7 +49,7 @@ jobs:
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -100,8 +100,4 @@ jobs:
         run: docker compose pull
 
       - name: Run docker compose up
-        run: |
-          docker compose up -d
-
-      - name: Remove unused docker storages
-        run: docker system prune -a -f --volumes
+        run: docker compose up -d
