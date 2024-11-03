@@ -6,6 +6,10 @@ services:
       - "443:443"
     volumes:
       - ./nginx:/etc/nginx
+    environment:
+      - BACKEND_HOST=http://backend:8000
+      - FRONTEND_HOST=https://amanmg.net
+    entrypoint: /bin/sh -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     depends_on:
       # - frontend
       - backend
