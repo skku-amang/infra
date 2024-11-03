@@ -20,7 +20,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   frontend:
-    build: ./frontend
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/amang-frontend:latest
     ports:
       - '3000:3000'
     env_file:
