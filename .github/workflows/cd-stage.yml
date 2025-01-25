@@ -52,7 +52,7 @@ jobs:
 
       - name: Create private.key file
         run: |
-          echo "${{ secrets.NGINX_PRIVATE_KEY }}" > /path/to/your/keys/private.key
+          echo "${{ secrets.NGINX_PRIVATE_KEY }}" > /etc/nginx/private.key
 
       - name: Login to GHCR
         run: docker login ghcr.io -u "${{ github.repository_owner }}" -p ${{ secrets.GHCR_TOKEN }}
