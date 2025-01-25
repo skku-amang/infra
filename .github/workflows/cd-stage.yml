@@ -50,6 +50,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Create private.key file
+        run: |
+          echo "${{ secrets.NGINX_PRIVATE_KEY }}" > /path/to/your/keys/private.key
+
       - name: Login to GHCR
         run: docker login ghcr.io -u "${{ github.repository_owner }}" -p ${{ secrets.GHCR_TOKEN }}
 
