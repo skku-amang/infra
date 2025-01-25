@@ -6,3 +6,7 @@
 	path = frontend
 	url = https://github.com/skku-amang/frontend.git
 	branch = main
+[submodule "booker"]
+	path = booker
+	url = https://github.com/manamana32321/booker.git
+	branch = main
