@@ -165,7 +165,3 @@ cython_debug/
 staticfiles
 media
 .env.local
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
