@@ -42,17 +42,12 @@ jobs:
     runs-on: self-hosted
     environment:
       name: stage
-      url: https://amang.net
     needs: [build-backend]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Create private.key file
-        run: |
-          echo "${{ secrets.NGINX_PRIVATE_KEY }}" > /etc/nginx/private.key
 
       - name: Login to GHCR
         run: docker login ghcr.io -u "${{ github.repository_owner }}" -p ${{ secrets.GHCR_TOKEN }}
