@@ -10,39 +10,11 @@ permissions:
   packages: write
 
 jobs:
-  build-backend:
-    name: Build and Push Backend Image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/amang-backend:latest
-
   deploy:
     name: Deploy and Run Server
     runs-on: self-hosted
     environment:
       name: stage
-    needs: [build-backend]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
