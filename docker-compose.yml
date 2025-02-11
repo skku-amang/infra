@@ -1,5 +1,6 @@
 services:
   nginx:
+    container_name: nginx
     image: nginx:latest
     ports:
       - "80:80"
@@ -11,6 +12,7 @@ services:
       - backend
 
   db:
+    container_name: db
     image: postgres:latest
     ports:
       - '5432:5432'
@@ -20,6 +22,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   backend:
+    container_name: backend
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/skku-amang/backend:latest
     ports:
       - '8000:8000'
@@ -39,6 +42,7 @@ services:
       "
 
   frontend:
+    container_name: frontend
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/skku-amang/frontend:latest
     ports:
       - '3000:3000'
