@@ -20,7 +20,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/backend:latest
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/skku-amang/backend:latest
     ports:
       - '8000:8000'
     env_file:
@@ -39,7 +39,7 @@ services:
       "
 
   frontend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/frontend:latest
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/skku-amang/frontend:latest
     ports:
       - '3000:3000'
     env_file:
