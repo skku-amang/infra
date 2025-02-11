@@ -7,7 +7,7 @@ services:
     volumes:
       - ./nginx:/etc/nginx
     depends_on:
-      # - frontend
+      - frontend
       - backend
 
   db:
@@ -19,17 +19,8 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - '3000:3000'
-  #   env_file:
-  #     - ./frontend/.env.development
-  #   depends_on:
-  #     - db
-
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/amang-backend:latest
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/backend:latest
     ports:
       - '8000:8000'
     env_file:
@@ -47,7 +38,14 @@ services:
         python manage.py runserver 0.0.0.0:8000
       "
 
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/frontend:latest
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./frontend/.env.development
+    depends_on:
+      - backend
+
 volumes:
   db-data:
-  # frontend-cache:
-  backend-cache:
