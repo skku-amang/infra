@@ -7,8 +7,8 @@ services:
       - "443:443"
     volumes:
       - ./nginx:/etc/nginx
-      - ${SSL_CERTIFICATE_PATH}:/etc/nginx/ssl/fullchain.pem
-      - ${SSL_PRIVATE_KEY_PATH}:/etc/nginx/ssl/privkey.pem
+      - ${SSL_CERTIFICATE_PATH}:/etc/nginx/fullchain.pem
+      - ${SSL_PRIVATE_KEY_PATH}:/etc/nginx/privkey.pem
     depends_on:
       - frontend
       - backend
