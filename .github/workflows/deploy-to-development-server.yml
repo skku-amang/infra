@@ -23,5 +23,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Stop existing containers
+        run: docker compose -f docker-compose-dev.yml down
+        continue-on-error: true
+
       - name: Build and run Docker images
-        run: docker compose -f docker-compose-dev.yml up -d
+        run: docker compose -f docker-compose-dev.yml up
