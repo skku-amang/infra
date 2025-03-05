@@ -38,8 +38,8 @@ services:
       DATABASE_USER: ${DEV_DATABASE_USER}
       DATABASE_PASSWORD: ${DEV_DATABASE_PASSWORD}
     depends_on:
-      - db:
-          condition: service_healthy
+      db:
+        condition: service_healthy
     volumes:
       - ./backend:/app
     command: >
