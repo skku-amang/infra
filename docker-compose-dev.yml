@@ -16,6 +16,12 @@ services:
       POSTGRES_PASSWORD: ${DEV_DATABASE_PASSWORD}
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DEV_DATABASE_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   backend:
     container_name: amang-backend
@@ -32,7 +38,8 @@ services:
       DATABASE_USER: ${DEV_DATABASE_USER}
       DATABASE_PASSWORD: ${DEV_DATABASE_PASSWORD}
     depends_on:
-      - db
+      - db:
+          condition: service_healthy
     volumes:
       - ./backend:/app
     command: >
