@@ -28,7 +28,7 @@ jobs:
         continue-on-error: true
 
       - name: Build and run Docker images
-        run: docker compose -f docker-compose-dev.yml up
+        run: docker compose -f docker-compose-dev.yml up -d
         env:
           DEV_DEPLOY_PORT: ${{ vars.DEV_DEPLOY_PORT }}
           DEV_DATABASE_NAME: ${{ secrets.DEV_DATABASE_NAME }}
