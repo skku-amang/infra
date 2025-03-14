@@ -31,6 +31,7 @@ jobs:
         run: docker compose -f docker-compose.yml up -d
         env:
           PROD_DEPLOY_PORT: ${{ secrets.PROD_DEPLOY_PORT }}
+          PROD_DATABASE_PORT: ${{ secrets.PROD_DATABASE_PORT }}
           PROD_DATABASE_NAME: ${{ secrets.PROD_DATABASE_NAME }}
           PROD_DATABASE_USER: ${{ secrets.PROD_DATABASE_USER }}
           PROD_DATABASE_PASSWORD: ${{ secrets.PROD_DATABASE_PASSWORD }}
