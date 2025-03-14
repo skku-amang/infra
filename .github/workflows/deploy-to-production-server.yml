@@ -25,11 +25,11 @@ jobs:
           submodules: true
 
       - name: Stop existing containers
-        run: docker compose -f docker-compose.yml down
+        run: docker-compose -f docker-compose.yml down
         continue-on-error: true
 
       - name: Build and run Docker images
-        run: docker compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-compose.yml up -d
         env:
           PROD_DEPLOY_PORT: ${{ secrets.PROD_DEPLOY_PORT }}
           PROD_DATABASE_PORT: ${{ secrets.PROD_DATABASE_PORT }}
