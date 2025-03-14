@@ -2,7 +2,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "${DEV_DEPLOY_PORT}:80"
+      - "${PROD_DEPLOY_PORT}:80"
     volumes:
       - ./nginx:/etc/nginx
     depends_on:
@@ -10,29 +10,38 @@ services:
 
   db:
     image: postgres:latest
+    ports:
+      - "${PROD_DATABASE_PORT}:5432"
     environment:
-      POSTGRES_DB: ${DEV_DATABASE_NAME}
-      POSTGRES_USER: ${DEV_DATABASE_USER}
-      POSTGRES_PASSWORD: ${DEV_DATABASE_PASSWORD}
+      POSTGRES_DB: ${PROD_DATABASE_NAME}
+      POSTGRES_USER: ${PROD_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PROD_DATABASE_PASSWORD}
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DEV_DATABASE_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   backend:
     container_name: amang-backend
     build:
       context: ./backend
     environment:
-      DJANGO_SETTINGS_MODULE: main.settings.development
-      DJANGO_SUPERUSER_EMAIL: ${DEV_SUPERUSER_EMAIL}
-      DJANGO_SUPERUSER_PASSWORD: ${DEV_SUPERUSER_PASSWORD}
-      ALLOWED_HOSTS: "*"
+      DJANGO_SETTINGS_MODULE: main.settings.production
+      DJANGO_SUPERUSER_EMAIL: ${PROD_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${PROD_SUPERUSER_PASSWORD}
+      ALLOWED_HOSTS: ${PROD_ALLOWED_HOSTS}
       DATABASE_URL: db
       DATABASE_PORT: 5432
-      DATABASE_NAME: ${DEV_DATABASE_NAME}
-      DATABASE_USER: ${DEV_DATABASE_USER}
-      DATABASE_PASSWORD: ${DEV_DATABASE_PASSWORD}
+      DATABASE_NAME: ${PROD_DATABASE_NAME}
+      DATABASE_USER: ${PROD_DATABASE_USER}
+      DATABASE_PASSWORD: ${PROD_DATABASE_PASSWORD}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./backend:/app
     command: >
@@ -43,6 +52,6 @@ services:
         python manage.py seed_generations &&
         python manage.py runserver 0.0.0.0:8000
       "
-
+  # TODO: add minio service
 volumes:
   db-data:
