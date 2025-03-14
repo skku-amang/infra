@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - development
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -36,3 +37,14 @@ jobs:
           DEV_DATABASE_PASSWORD: ${{ secrets.DEV_DATABASE_PASSWORD }}
           DEV_SUPERUSER_EMAIL: ${{ secrets.DEV_SUPERUSER_EMAIL }}
           DEV_SUPERUSER_PASSWORD: ${{ secrets.DEV_SUPERUSER_PASSWORD }}
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for services to start..."
+          sleep 10
+          if [ "$(docker ps -q -f name=backend)" ]; then
+            echo "✅ backend is running"
+          else
+            echo "❌ Failed to start backend"
+            exit 1
+          fi
