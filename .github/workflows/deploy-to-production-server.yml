@@ -1,4 +1,4 @@
-name: CD Stage
+name: Deploy to Production Server
 
 on:
   push:
@@ -12,8 +12,8 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy and Run Server
-    runs-on: self-hosted
+    name: Deploy and Run Production Server
+    runs-on: [self-hosted, production]
     environment:
       name: production
       url: https://amang.json-server.win
