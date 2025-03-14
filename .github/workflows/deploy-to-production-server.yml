@@ -1,0 +1,39 @@
+name: CD Stage
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy and Run Server
+    runs-on: self-hosted
+    environment:
+      name: production
+      url: https://amang.json-server.win
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Stop existing containers
+        run: docker compose -f docker-compose.yml down
+        continue-on-error: true
+
+      - name: Build and run Docker images
+        run: docker compose -f docker-compose.yml up -d
+        env:
+          PROD_DEPLOY_PORT: ${{ secrets.PROD_DEPLOY_PORT }}
+          PROD_DATABASE_NAME: ${{ secrets.PROD_DATABASE_NAME }}
+          PROD_DATABASE_USER: ${{ secrets.PROD_DATABASE_USER }}
+          PROD_DATABASE_PASSWORD: ${{ secrets.PROD_DATABASE_PASSWORD }}
+          PROD_SUPERUSER_EMAIL: ${{ secrets.PROD_SUPERUSER_EMAIL }}
+          PROD_SUPERUSER_PASSWORD: ${{ secrets.PROD_SUPERUSER_PASSWORD }}
+          PROD_ALLOWED_HOSTS: ${{ secrets.PROD_ALLOWED_HOSTS }}
