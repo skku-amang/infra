@@ -31,12 +31,15 @@ jobs:
       - name: Build and run Docker images
         run: docker-compose -f docker-compose-dev.yml up -d
         env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           DATABASE_USER: ${{ secrets.DATABASE_USER }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           SUPERUSER_EMAIL: ${{ secrets.SUPERUSER_EMAIL }}
           SUPERUSER_PASSWORD: ${{ secrets.SUPERUSER_PASSWORD }}
+          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+          DJANGO_CORS_ALLOWED_ORIGINS: ${{ secrets.DJANGO_CORS_ALLOWED_ORIGINS }}
 
           # MinIO 관련 환경 변수
           MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
