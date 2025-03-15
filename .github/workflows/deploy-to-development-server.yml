@@ -31,12 +31,21 @@ jobs:
       - name: Build and run Docker images
         run: docker-compose -f docker-compose-dev.yml up -d
         env:
-          DEV_DEPLOY_PORT: ${{ vars.DEV_DEPLOY_PORT }}
-          DEV_DATABASE_NAME: ${{ secrets.DEV_DATABASE_NAME }}
-          DEV_DATABASE_USER: ${{ secrets.DEV_DATABASE_USER }}
-          DEV_DATABASE_PASSWORD: ${{ secrets.DEV_DATABASE_PASSWORD }}
-          DEV_SUPERUSER_EMAIL: ${{ secrets.DEV_SUPERUSER_EMAIL }}
-          DEV_SUPERUSER_PASSWORD: ${{ secrets.DEV_SUPERUSER_PASSWORD }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          SUPERUSER_EMAIL: ${{ secrets.SUPERUSER_EMAIL }}
+          SUPERUSER_PASSWORD: ${{ secrets.SUPERUSER_PASSWORD }}
+
+          # MinIO 관련 환경 변수
+          MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+          MINIO_API_PORT: ${{ secrets.MINIO_API_PORT }}
+          MINIO_CONSOLE_PORT: ${{ secrets.MINIO_CONSOLE_PORT }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_ROOT_USER }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_ROOT_PASSWORD }}
+          AWS_S3_ENDPOINT_URL: "http://minio:9000" # 컨테이너 내부 통신용
 
       - name: Verify deployment
         run: |
