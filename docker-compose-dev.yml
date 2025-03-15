@@ -10,6 +10,8 @@ services:
 
   db:
     image: postgres:latest
+    ports:
+      - "${DATABASE_PORT}:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
