@@ -19,14 +19,14 @@ jobs:
       name: production
       url: https://amang.json-server.win
     steps:
+      - name: Stop existing containers
+        run: docker-compose -f docker-compose.yml down
+        continue-on-error: true
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Stop existing containers
-        run: docker-compose -f docker-compose.yml down
-        continue-on-error: true
 
       - name: Build and run Docker images
         run: docker-compose -f docker-compose.yml up -d
