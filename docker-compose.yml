@@ -54,6 +54,14 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+    command: >
+      bash -c "
+        python manage.py migrate &&
+        python manage.py create_superuser &&
+        python manage.py seed_sessions &&
+        python manage.py seed_generations &&
+        exec gunicorn --bind 0.0.0.0:8000 main.wsgi:application
+      "
 
   minio:
     image: minio/minio:latest
