@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "Waiting for services to start..."
           sleep 10
-          if [ "$(docker ps -q -f name=backend)" ]; then
+          if [ "$(docker ps -q -f name=amang-backend)" ]; then
             echo "✅ backend is running"
           else
             echo "❌ Failed to start backend"
